@@ -1,0 +1,26 @@
+[
+  {
+    "name": "John Doe",
+    "email": "cis@gmail.com",
+    "passwordHash": "$2b$10$MQz1AwRagNjTNMh10cqmGuoqC7L18eUnNHNB.6d5H2lLSzeHEH1U.",
+    "createdAt": "2026-04-18T11:39:02.618Z"
+  },
+  {
+    "name": "Vasu Roy",
+    "email": "cis1@gmail.com",
+    "passwordHash": "$2b$10$dk12UL5M/EfAkT8vHaQEJ.3uBIrZVEPPcxhlYsZ2tfkzEgZ.ZO07i",
+    "createdAt": "2026-04-18T11:47:50.392Z"
+  },
+  {
+    "name": "Tanu",
+    "email": "tanu@gmail.com",
+    "passwordHash": "$2b$10$9S.DiJaVBDhKfOkTw63GzeI5xx3JTgfGenJ/OU.BISaE0ohwHDrH.",
+    "createdAt": "2026-04-18T16:37:34.975Z"
+  },
+  {
+    "name": "Vaas",
+    "email": "vaas@gmail.com",
+    "passwordHash": "$2b$10$wAbEoyOzbV3gfbgwV2Ucmurc4vijcGFl4S9L7PMUqqYfHQy.kFDiK",
+    "createdAt": "2026-04-18T16:41:34.957Z"
+  }
+]
