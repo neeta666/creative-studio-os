@@ -1,0 +1,25 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+  Global base styles.
+  Tailwind utilities are available everywhere via className.
+  Add any non-utility globals here (e.g. scrollbar, body defaults).
+*/
+
+:root {
+  --accent: #e55a1e;
+}
+
+body {
+  background-color: #0e0e0f;
+  color: #f0efe8;
+  font-family: 'DM Sans', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Thin scrollbar — consistent with the HTML/CSS prototype */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #2a2a2e; border-radius: 4px; }
