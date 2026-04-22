@@ -32,13 +32,20 @@ export default function PersonaCard({
         // Selected state — border picks up persona accent via inline style
         isActive ? 'ring-1' : '',
       ].join(' ')}
-      style={isActive ? { borderColor: persona.accentColor, background: `${persona.accentColor}1f` } : {}}
+      style={
+        isActive
+          ? {
+              borderColor: persona.accentColor,
+              background: `${persona.accentColor}1f`,
+            }
+          : {}
+      }
     >
       {/* Icon */}
       <div
         className="w-10 h-10 rounded-md flex items-center justify-center flex-shrink-0 border"
         style={{
-          background:  `${persona.accentColor}1a`,
+          background: `${persona.accentColor}1a`,
           borderColor: persona.accentColor,
         }}
       >

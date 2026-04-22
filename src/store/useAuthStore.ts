@@ -4,11 +4,11 @@ import { login as loginService } from '@/api/authService'
 import type { User, LoginCredentials } from '@/types/auth'
 
 interface AuthState {
-  user:            User | null
-  token:           string | null
+  user: User | null
+  token: string | null
   isAuthenticated: boolean
 
-  login:  (credentials: LoginCredentials) => Promise<void>
+  login: (credentials: LoginCredentials) => Promise<void>
   logout: () => void
 }
 
@@ -16,8 +16,8 @@ const useAuthStore = create<AuthState>()(
   persist(
     (set) => ({
       // ── Initial state ──────────────────────────────────────────────────
-      user:            null,
-      token:           null,
+      user: null,
+      token: null,
       isAuthenticated: false,
 
       // ── login ──────────────────────────────────────────────────────────
@@ -33,7 +33,7 @@ const useAuthStore = create<AuthState>()(
         set({ user: null, token: null, isAuthenticated: false })
       },
     }),
-    { name: 'auth' }   // localStorage key — same pattern as 'active-persona'
+    { name: 'auth' } // localStorage key — same pattern as 'active-persona'
   )
 )
 

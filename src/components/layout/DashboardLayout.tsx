@@ -1,7 +1,7 @@
-import Sidebar     from './Sidebar'
-import Header      from './Header'
+import Sidebar from './Sidebar'
+import Header from './Header'
 import MainContent from './MainContent'
-import RightPanel  from './RightPanel'
+import RightPanel from './RightPanel'
 
 interface DashboardLayoutProps {
   // Header
@@ -42,7 +42,7 @@ export default function DashboardLayout({
       className="h-screen overflow-hidden grid"
       style={{
         gridTemplateColumns: '200px 1fr 340px',
-        gridTemplateRows:    '56px 1fr',
+        gridTemplateRows: '56px 1fr',
         gridTemplateAreas: `
           "sidebar header header"
           "sidebar main   right"

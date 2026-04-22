@@ -1,12 +1,12 @@
 import type { LoginCredentials, AuthResponse } from '@/types/auth'
 
 // Mock delay helper — simulates real network latency
-const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
+const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 
 // Mock user returned for any valid login
 const MOCK_USER = {
-  id:    'user_001',
-  name:  'Jay',
+  id: 'user_001',
+  name: 'Jay',
   email: 'jay@uden.tech',
 }
 
@@ -14,7 +14,9 @@ const MOCK_USER = {
 // Swap the function body for a real apiRequest() call when the backend is ready.
 // The store and callers don't need to change — only this function.
 
-export async function login(credentials: LoginCredentials): Promise<AuthResponse> {
+export async function login(
+  credentials: LoginCredentials
+): Promise<AuthResponse> {
   await delay(600)
 
   // Basic mock validation — any non-empty email + password succeeds
@@ -23,14 +25,16 @@ export async function login(credentials: LoginCredentials): Promise<AuthResponse
   }
 
   return {
-    user:  { ...MOCK_USER, email: credentials.email },
+    user: { ...MOCK_USER, email: credentials.email },
     token: 'mock_token_xyz_123',
   }
 }
 
 // ── register ────────────────────────────────────────────────────────────────
 
-export async function register(credentials: LoginCredentials): Promise<AuthResponse> {
+export async function register(
+  credentials: LoginCredentials
+): Promise<AuthResponse> {
   await delay(600)
 
   if (!credentials.email || !credentials.password) {
@@ -38,7 +42,7 @@ export async function register(credentials: LoginCredentials): Promise<AuthRespo
   }
 
   return {
-    user:  { ...MOCK_USER, email: credentials.email },
+    user: { ...MOCK_USER, email: credentials.email },
     token: 'mock_token_xyz_456',
   }
 }

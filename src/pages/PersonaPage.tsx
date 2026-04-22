@@ -46,48 +46,48 @@ const PERSONA_ICONS: Record<PersonaId, React.ReactNode> = {
 
 // Per-persona brand color dots — matches persona.html exactly
 const PERSONA_DOTS: Record<PersonaId, string[]> = {
-  uden_tech:    ['#e55a1e', '#f0efe8'],
+  uden_tech: ['#e55a1e', '#f0efe8'],
   viral_monkey: ['#e55a1e', '#f5c518'],
-  career_jobs:  ['#3b8bd4', '#f0efe8'],
+  career_jobs: ['#3b8bd4', '#f0efe8'],
   gov_outreach: ['#1d9e75', '#5dcaa5', '#f0efe8'],
-  blank:        ['#5a5a5e', '#f0efe8'],
+  blank: ['#5a5a5e', '#f0efe8'],
 }
 
 // ── Page ────────────────────────────────────────────────────────────────────
 
 export default function PersonaPage() {
-  const navigate          = useNavigate()
-  const activePersonaId   = usePersonaStore(state => state.activePersonaId)
-  const setActivePersona  = usePersonaStore(state => state.setActivePersona)
+  const navigate = useNavigate()
+  const activePersonaId = usePersonaStore((state) => state.activePersonaId)
+  const setActivePersona = usePersonaStore((state) => state.setActivePersona)
 
   function handleSelect(id: PersonaId) {
-    setActivePersona(id)            // updates store + persists via zustand middleware
-    setTimeout(() => navigate('/'), 150)  // 150ms lets the card selection animate before redirect
+    setActivePersona(id) // updates store + persists via zustand middleware
+    setTimeout(() => navigate('/'), 150) // 150ms lets the card selection animate before redirect
   }
 
   return (
     <div className="min-h-screen bg-bg-base flex items-center justify-center overflow-auto py-12 px-6">
       <div className="w-full max-w-[760px] flex flex-col items-center gap-10">
-
         {/* Heading — matches persona-screen__header */}
         <div className="text-center flex flex-col gap-2">
           <h1 className="font-display text-[40px] font-bold text-text-primary leading-tight">
-            Choose{' '}
-            <span className="text-accent">Persona</span>
+            Choose <span className="text-accent">Persona</span>
           </h1>
           <p className="text-[13px] text-text-muted uppercase tracking-[0.04em]">
-            Every output locks to that brand's complete style guide.
+            Every output locks to that brand&apos;s complete style guide.
           </p>
         </div>
 
         {/* Grid — 3 cols desktop, 2 cols tablet, 1 col mobile */}
-        <div className="
+        <div
+          className="
           grid gap-[14px] w-full
           grid-cols-1
           sm:grid-cols-2
           md:grid-cols-3
-        ">
-          {PERSONAS.map(persona => (
+        "
+        >
+          {PERSONAS.map((persona) => (
             <PersonaCard
               key={persona.id}
               persona={persona}
@@ -98,7 +98,6 @@ export default function PersonaPage() {
             />
           ))}
         </div>
-
       </div>
     </div>
   )

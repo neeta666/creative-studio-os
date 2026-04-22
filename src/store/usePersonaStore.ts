@@ -6,38 +6,38 @@ import type { Persona, PersonaId } from '@/types/persona'
 // Components and pages import this list — never hardcode persona data elsewhere.
 export const PERSONAS: Persona[] = [
   {
-    id:           'uden_tech',
-    label:        'UDEN.tech',
-    description:  'AI career platform · Tier 2/3 students',
-    accentColor:  '#e55a1e',
+    id: 'uden_tech',
+    label: 'UDEN.tech',
+    description: 'AI career platform · Tier 2/3 students',
+    accentColor: '#e55a1e',
     avatarLetter: 'U',
   },
   {
-    id:           'viral_monkey',
-    label:        'Viral Monkey',
-    description:  'YouTube growth & viral content',
-    accentColor:  '#e55a1e',
+    id: 'viral_monkey',
+    label: 'Viral Monkey',
+    description: 'YouTube growth & viral content',
+    accentColor: '#e55a1e',
     avatarLetter: 'V',
   },
   {
-    id:           'career_jobs',
-    label:        'Career & Jobs',
-    description:  'Job market insights & career guidance',
-    accentColor:  '#3b8bd4',
+    id: 'career_jobs',
+    label: 'Career & Jobs',
+    description: 'Job market insights & career guidance',
+    accentColor: '#3b8bd4',
     avatarLetter: 'C',
   },
   {
-    id:           'gov_outreach',
-    label:        'Gov Outreach',
-    description:  'B2G communications & skill schemes',
-    accentColor:  '#1d9e75',
+    id: 'gov_outreach',
+    label: 'Gov Outreach',
+    description: 'B2G communications & skill schemes',
+    accentColor: '#1d9e75',
     avatarLetter: 'G',
   },
   {
-    id:           'blank',
-    label:        'Blank / Free Mode',
-    description:  'No brand constraints — full creative freedom',
-    accentColor:  '#8a64ff',
+    id: 'blank',
+    label: 'Blank / Free Mode',
+    description: 'No brand constraints — full creative freedom',
+    accentColor: '#8a64ff',
     avatarLetter: 'B',
   },
 ]
@@ -55,14 +55,16 @@ const usePersonaStore = create<PersonaState>()(
       activePersonaId: 'uden_tech',
 
       getActivePersona: () => {
-        return PERSONAS.find(p => p.id === get().activePersonaId) ?? PERSONAS[0]
+        return (
+          PERSONAS.find((p) => p.id === get().activePersonaId) ?? PERSONAS[0]
+        )
       },
 
       setActivePersona: (id: PersonaId) => {
         set({ activePersonaId: id })
       },
     }),
-    { name: 'active-persona' }   // localStorage key
+    { name: 'active-persona' } // localStorage key
   )
 )
 

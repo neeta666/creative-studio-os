@@ -31,7 +31,7 @@ export async function apiRequest<T>(
     // Throw a plain object so callers can check status and message
     const error = await response.json().catch(() => ({}))
     throw {
-      status:  response.status,
+      status: response.status,
       message: error.message ?? 'Something went wrong',
     }
   }

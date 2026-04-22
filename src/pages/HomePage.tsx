@@ -13,11 +13,8 @@ export default function HomePage() {
     >
       {/* Placeholder — future: VideoStudio content goes here */}
       <div className="flex items-center justify-center h-full">
-        <p className="text-text-muted text-sm">
-          Page content goes here
-        </p>
+        <p className="text-text-muted text-sm">Page content goes here</p>
       </div>
-
     </DashboardLayout>
   )
 }
