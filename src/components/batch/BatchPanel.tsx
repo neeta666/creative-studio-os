@@ -52,7 +52,7 @@ export default function BatchPanel() {
     cancelRef.current = false
     setTopics(initialTopics)
     setBatchStatus('running')
-    setCurrentIdx(0)
+    //setCurrentIdx(0)
 
     // Process sequentially with setTimeout chain
     processNext(initialTopics, 0)
@@ -64,7 +64,7 @@ export default function BatchPanel() {
       return
     }
 
-    setCurrentIdx(idx)
+    //setCurrentIdx(idx)
 
     // Mark current as processing
     setTopics(prev =>
