@@ -14,7 +14,6 @@ export default function BatchPanel() {
   const [input,       setInput]       = useState('')
   const [topics,      setTopics]      = useState<BatchTopic[]>([])
   const [batchStatus, setBatchStatus] = useState<BatchStatus>('idle')
-  const [currentIdx,  setCurrentIdx]  = useState(0)
 
   // cancelRef lets the running loop check if cancel was requested
   // without needing to put it in state (avoids stale closure issues)
@@ -52,7 +51,6 @@ export default function BatchPanel() {
     cancelRef.current = false
     setTopics(initialTopics)
     setBatchStatus('running')
-    setCurrentIdx(0)
 
     // Process sequentially with setTimeout chain
     processNext(initialTopics, 0)
@@ -64,7 +62,6 @@ export default function BatchPanel() {
       return
     }
 
-    setCurrentIdx(idx)
 
     // Mark current as processing
     setTopics(prev =>
@@ -108,7 +105,6 @@ export default function BatchPanel() {
     setInput('')
     setTopics([])
     setBatchStatus('idle')
-    setCurrentIdx(0)
   }
 
   // ── Render ────────────────────────────────────────────────────────────────
