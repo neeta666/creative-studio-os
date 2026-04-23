@@ -44,10 +44,18 @@ export default function TopicRow({ topic, index }: TopicRowProps) {
       <div className="flex-1 min-w-0 flex flex-col gap-1">
         <span className="text-[13px] text-text-primary truncate">{topic.text}</span>
         {topic.result && (
-          <span className="text-[12px] text-text-secondary leading-snug line-clamp-2">
-            {topic.result}
-          </span>
-        )}
+  <div className="text-[12px] text-text-secondary leading-snug">
+    <p className="font-medium text-text-primary">
+      {topic.result.title}
+    </p>
+    <p className="line-clamp-2">
+      {topic.result.content}
+    </p>
+    <span className="text-[10px] text-text-muted">
+      {topic.result.word_count} words
+    </span>
+  </div>
+)}
       </div>
 
       {/* Status badge */}

@@ -6,7 +6,11 @@ export interface BatchTopic {
   id:     string
   text:   string
   status: TopicStatus
-  result?: string   // populated on completion
+  result?: {
+    title: string
+    content: string
+    word_count: number
+  }   // populated on completion
 }
 
 export type BatchStatus = 'idle' | 'running' | 'done' | 'cancelled'

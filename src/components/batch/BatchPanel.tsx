@@ -6,8 +6,31 @@ const MAX_TOPICS       = 10
 const DELAY_PER_TOPIC  = 1200   // ms — simulates generation time
 
 // Mock result generator — replace with real API call later
-function mockGenerate(topic: string): string {
-  return `Generated content for "${topic}": Here is a sample output that represents what the AI would produce for this topic. This is placeholder text.`
+function mockGenerate(topic: string) {
+  const lower = topic.toLowerCase()
+
+  let angle = 'Guide'
+  if (lower.includes('job') || lower.includes('career')) angle = 'Tips'
+  if (lower.includes('ai') || lower.includes('tech')) angle = 'Trends'
+
+  const title =
+    angle === 'Tips'
+      ? `Top ${topic} Tips You Should Know`
+      : angle === 'Trends'
+      ? `Latest ${topic} Trends in 2026`
+      : `Complete Guide to ${topic}`
+
+  const content = `
+${topic} is becoming increasingly important in today’s landscape. Whether you're a beginner or looking to improve, understanding ${topic} can give you a strong advantage.
+
+In this ${angle.toLowerCase()}, we explore key aspects of ${topic}, including practical insights, real-world relevance, and actionable ideas.
+
+As the demand for ${topic} continues to grow, staying updated and building the right skills will help you stay ahead.
+`
+
+  const word_count = content.split(' ').length
+
+  return { title, content, word_count }
 }
 
 export default function BatchPanel() {
@@ -75,20 +98,17 @@ export default function BatchPanel() {
         return
       }
 
-      // 15% random failure rate
-      const didFail = Math.random() < 0.15
-
       setTopics(prev =>
-        prev.map((t, i) =>
-          i === idx
-            ? {
-                ...t,
-                status: didFail ? 'failed' : 'completed',
-                result: didFail ? undefined : mockGenerate(t.text),
-              }
-            : t
-        )
-      )
+  prev.map((t, i) =>
+    i === idx
+      ? {
+          ...t,
+          status: 'completed',
+          result: mockGenerate(t.text),
+        }
+      : t
+  )
+)
 
       // Move to next
       processNext(topicList, idx + 1)
