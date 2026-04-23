@@ -14,7 +14,7 @@ export default function BatchPanel() {
   const [input,       setInput]       = useState('')
   const [topics,      setTopics]      = useState<BatchTopic[]>([])
   const [batchStatus, setBatchStatus] = useState<BatchStatus>('idle')
-  const [currentIdx,  setCurrentIdx]  = useState(0)
+  //const [currentIdx,  setCurrentIdx]  = useState(0)
 
   // cancelRef lets the running loop check if cancel was requested
   // without needing to put it in state (avoids stale closure issues)
