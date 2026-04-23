@@ -57,7 +57,7 @@ export default function DashboardLayout({
         <Header title={title} subtitle={subtitle} />
       </div>
 
-      <div style={{ gridArea: 'main' }}>
+      <div style={{ gridArea: 'main' }} className="h-full overflow-hidden">
         <MainContent>{children}</MainContent>
       </div>
 

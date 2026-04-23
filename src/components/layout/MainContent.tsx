@@ -8,8 +8,10 @@ interface MainContentProps {
 
 export default function MainContent({ children }: MainContentProps) {
   return (
-    <main className="bg-bg-base overflow-y-auto">
-      <div className="flex flex-col gap-5 p-6 h-full">{children}</div>
+    <main className="bg-bg-base overflow-y-auto h-full">
+      <div className="flex flex-col gap-5 p-6">
+        {children}
+      </div>
     </main>
   )
 }
