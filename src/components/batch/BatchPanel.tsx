@@ -1,46 +1,18 @@
 import { useState, useRef } from 'react'
 import type { BatchTopic, BatchStatus } from '@/types/batch'
 import TopicRow from './TopicRow'
+import { generateVariants } from '@/api/generateService'
+import usePersonaStore from '@/store/usePersonaStore'
 
-const MAX_TOPICS       = 10
-const DELAY_PER_TOPIC  = 1200   // ms — simulates generation time
-
-// Mock result generator — replace with real API call later
-function mockGenerate(topic: string) {
-  const lower = topic.toLowerCase()
-
-  let angle = 'Guide'
-  if (lower.includes('job') || lower.includes('career')) angle = 'Tips'
-  if (lower.includes('ai') || lower.includes('tech')) angle = 'Trends'
-
-  const title =
-    angle === 'Tips'
-      ? `Top ${topic} Tips You Should Know`
-      : angle === 'Trends'
-      ? `Latest ${topic} Trends in 2026`
-      : `Complete Guide to ${topic}`
-
-  const content = `
-${topic} is becoming increasingly important in today’s landscape. Whether you're a beginner or looking to improve, understanding ${topic} can give you a strong advantage.
-
-In this ${angle.toLowerCase()}, we explore key aspects of ${topic}, including practical insights, real-world relevance, and actionable ideas.
-
-As the demand for ${topic} continues to grow, staying updated and building the right skills will help you stay ahead.
-`
-
-  const word_count = content.split(' ').length
-
-  return { title, content, word_count }
-}
+const MAX_TOPICS = 10
 
 export default function BatchPanel() {
   const [input,       setInput]       = useState('')
   const [topics,      setTopics]      = useState<BatchTopic[]>([])
   const [batchStatus, setBatchStatus] = useState<BatchStatus>('idle')
 
-  // cancelRef lets the running loop check if cancel was requested
-  // without needing to put it in state (avoids stale closure issues)
   const cancelRef = useRef(false)
+  const persona   = usePersonaStore(state => state.getActivePersona())
 
   // ── Derived values ────────────────────────────────────────────────────────
 
@@ -55,10 +27,7 @@ export default function BatchPanel() {
   const failed       = topics.filter(t => t.status === 'failed').length
   const isDone       = batchStatus === 'done' || batchStatus === 'cancelled'
   const isRunning    = batchStatus === 'running'
-
-  // Estimated seconds remaining (rough: remaining topics × delay)
-  const remaining    = topics.filter(t => t.status === 'pending').length
-  const etaSeconds   = Math.ceil((remaining * DELAY_PER_TOPIC) / 1000)
+  const inProgress   = topics.filter(t => t.status === 'processing').length
 
   // ── Handlers ──────────────────────────────────────────────────────────────
 
@@ -75,44 +44,50 @@ export default function BatchPanel() {
     setTopics(initialTopics)
     setBatchStatus('running')
 
-    // Process sequentially with setTimeout chain
+    // Process sequentially
     processNext(initialTopics, 0)
   }
 
-  function processNext(topicList: BatchTopic[], idx: number) {
+  async function processNext(topicList: BatchTopic[], idx: number) {
     if (cancelRef.current || idx >= topicList.length) {
       setBatchStatus(cancelRef.current ? 'cancelled' : 'done')
       return
     }
 
-
-    // Mark current as processing
+    // Mark current topic as processing
     setTopics(prev =>
       prev.map((t, i) => i === idx ? { ...t, status: 'processing' } : t)
     )
 
-    setTimeout(() => {
+    try {
+      const variants = await generateVariants({
+        topic:   topicList[idx].text,
+        persona: persona?.label ?? 'Default',
+      })
+
       if (cancelRef.current) {
-        // Mark remaining as pending (leave them as-is), stop
         setBatchStatus('cancelled')
         return
       }
 
+      // Use the first variant as the result (all 3 are available if needed later)
       setTopics(prev =>
-  prev.map((t, i) =>
-    i === idx
-      ? {
-          ...t,
-          status: 'completed',
-          result: mockGenerate(t.text),
-        }
-      : t
-  )
-)
+        prev.map((t, i) =>
+          i === idx
+            ? { ...t, status: 'completed', result: variants[0] }
+            : t
+        )
+      )
+    } catch {
+      setTopics(prev =>
+        prev.map((t, i) =>
+          i === idx ? { ...t, status: 'failed' } : t
+        )
+      )
+    }
 
-      // Move to next
-      processNext(topicList, idx + 1)
-    }, DELAY_PER_TOPIC)
+    // Move to next topic
+    processNext(topicList, idx + 1)
   }
 
   function handleCancel() {
@@ -211,9 +186,9 @@ export default function BatchPanel() {
               Progress
             </span>
             <div className="flex items-center gap-3">
-              {isRunning && (
+              {isRunning && inProgress > 0 && (
                 <span className="text-[11px] text-text-muted">
-                  ~{etaSeconds}s remaining
+                  Generating…
                 </span>
               )}
               <span className="text-[13px] font-semibold text-text-primary">
