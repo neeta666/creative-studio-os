@@ -1,32 +1,24 @@
-import Sidebar from './Sidebar'
-import Header from './Header'
+import { useState } from 'react'
+import Sidebar     from './Sidebar'
+import Header      from './Header'
 import MainContent from './MainContent'
-import RightPanel from './RightPanel'
+import RightPanel  from './RightPanel'
 
 interface DashboardLayoutProps {
-  // Header
   title: string
   subtitle?: string
-  // Right panel
   panelTitle?: string
   panelBadge?: string
   panelContent?: React.ReactNode
-  // Main area
   children: React.ReactNode
 }
 
 /*
-  Grid areas match the HTML prototype exactly:
+  Responsive layout strategy — mirrors the HTML/CSS prototype:
 
-  ┌──────────┬────────────────────┐
-  │          │       header       │
-  │ sidebar  ├──────────┬─────────┤
-  │          │   main   │  right  │
-  └──────────┴──────────┴─────────┘
-
-  Sidebar width:  200px  (matches --sidebar-width token)
-  Right width:    340px  (matches --right-width token)
-  Header height:  56px   (matches --header-height token, set via h-14)
+  Desktop  (≥1024px): sidebar(200px) | main(1fr) | right(340px)
+  Tablet   (768–1023px): sidebar(64px icon-only) | main(1fr) | right hidden
+  Mobile   (<768px): no sidebar in grid, sidebar overlays via fixed position
 */
 
 export default function DashboardLayout({
@@ -37,34 +29,53 @@ export default function DashboardLayout({
   panelContent,
   children,
 }: DashboardLayoutProps) {
+  const [sidebarOpen, setSidebarOpen] = useState(false)
+
   return (
-    <div
-      className="h-screen overflow-hidden grid"
-      style={{
-        gridTemplateColumns: '200px 1fr 340px',
-        gridTemplateRows: '56px 1fr',
-        gridTemplateAreas: `
-          "sidebar header header"
-          "sidebar main   right"
-        `,
-      }}
-    >
-      <div style={{ gridArea: 'sidebar' }}>
-        <Sidebar />
-      </div>
+    <div className="h-screen overflow-hidden flex flex-col">
 
-      <div style={{ gridArea: 'header' }}>
-        <Header title={title} subtitle={subtitle} />
-      </div>
+      {/* Header — always full width on top */}
+      <Header
+        title={title}
+        subtitle={subtitle}
+        onMenuClick={() => setSidebarOpen(true)}
+      />
 
-      <div style={{ gridArea: 'main' }} className="h-full overflow-hidden">
-        <MainContent>{children}</MainContent>
-      </div>
+      {/* Body row: sidebar + main + right */}
+      <div className="flex flex-1 overflow-hidden">
 
-      <div style={{ gridArea: 'right' }}>
-        <RightPanel title={panelTitle} badge={panelBadge}>
-          {panelContent}
-        </RightPanel>
+        {/* ── Sidebar — desktop/tablet: in flow. Mobile: fixed overlay ── */}
+
+        {/* Desktop + tablet: in-flow sidebar */}
+        <div className="hidden md:block flex-shrink-0 md:w-[64px] lg:w-[200px] h-full">
+          <Sidebar collapsed={false} />
+        </div>
+
+        {/* Mobile: fixed overlay sidebar + backdrop */}
+        {sidebarOpen && (
+          <>
+            <div
+              className="fixed inset-0 bg-black/50 z-40 md:hidden"
+              onClick={() => setSidebarOpen(false)}
+            />
+            <div className="fixed top-0 left-0 h-full w-[220px] z-50 md:hidden">
+              <Sidebar collapsed={false} onClose={() => setSidebarOpen(false)} />
+            </div>
+          </>
+        )}
+
+        {/* ── Main content — always visible ── */}
+        <div className="flex-1 overflow-hidden h-full">
+          <MainContent>{children}</MainContent>
+        </div>
+
+        {/* ── Right panel — desktop only ── */}
+        <div className="hidden lg:block flex-shrink-0 w-[340px] h-full">
+          <RightPanel title={panelTitle} badge={panelBadge}>
+            {panelContent}
+          </RightPanel>
+        </div>
+
       </div>
     </div>
   )
