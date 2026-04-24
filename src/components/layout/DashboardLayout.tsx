@@ -70,7 +70,7 @@ export default function DashboardLayout({
         </div>
 
         {/* ── Right panel — desktop only ── */}
-        <div className="hidden lg:block flex-shrink-0 w-[340px] h-full">
+        <div className="hidden lg:block flex-shrink-0 w-[400px] h-full">
           <RightPanel title={panelTitle} badge={panelBadge}>
             {panelContent}
           </RightPanel>
@@ -80,3 +80,4 @@ export default function DashboardLayout({
     </div>
   )
 }
+

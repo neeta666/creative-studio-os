@@ -69,7 +69,13 @@ function SingleResult({ result }: { result: Variant }) {
 
 // ── Main component ────────────────────────────────────────────────────────
 
-export default function BatchPanel() {
+export default function BatchPanel({
+  onResult,
+  onGenerating,
+}: {
+  onResult?:    (v: Variant | null) => void
+  onGenerating?: () => void
+}) {
   const persona = usePersonaStore(state => state.getActivePersona())
 
   // ── Mode ─────────────────────────────────────────────────────────────────
@@ -78,6 +84,7 @@ export default function BatchPanel() {
 
   function handleModeChange(m: Mode) {
     setMode(m)
+    onResult?.(null)
     // Reset single state
     setSingleInput('')
     setSingleResult(null)
@@ -104,6 +111,7 @@ export default function BatchPanel() {
     setSingleLoading(true)
     setSingleResult(null)
     setSingleError('')
+    onGenerating?.()
 
     try {
       const variants = await generateVariants({
@@ -111,6 +119,7 @@ export default function BatchPanel() {
         persona: persona?.label ?? 'Default',
       })
       setSingleResult(variants[0])
+      onResult?.(variants[0])
     } catch (err) {
       setSingleError(
         err instanceof Error ? err.message : 'Generation failed. Please try again.'
@@ -124,6 +133,7 @@ export default function BatchPanel() {
     setSingleInput('')
     setSingleResult(null)
     setSingleError('')
+    onResult?.(null)
   }
 
   // ── Batch state ───────────────────────────────────────────────────────────
@@ -275,9 +285,9 @@ export default function BatchPanel() {
             </div>
           )}
 
-          {/* Result */}
+          {/* Result — mobile/tablet fallback only. Desktop shows in RightPanel. */}
           {singleResult && !singleLoading && (
-            <div className="bg-bg-surface border border-[#1f1f23] rounded-lg p-5 flex flex-col gap-3">
+            <div className="lg:hidden bg-bg-surface border border-[#1f1f23] rounded-lg p-5 flex flex-col gap-3">
               <span className="text-[10px] font-semibold uppercase tracking-[0.1em] text-text-muted">
                 Generated Post
               </span>
