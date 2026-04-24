@@ -134,8 +134,10 @@ export default function BatchPanel() {
 
   const cancelRef = useRef(false)
 
-  const lines      = input.split('\n').map(l => l.trim()).filter(Boolean).slice(0, MAX_TOPICS)
-  const topicCount = lines.length
+  const allLines     = input.split('\n').map(l => l.trim()).filter(Boolean)
+  const overLimit    = allLines.length > MAX_TOPICS
+  const lines        = allLines.slice(0, MAX_TOPICS)   // still used by handleStart
+  const topicCount   = allLines.length                 // reflects actual typed count
   const completed  = topics.filter(t => t.status === 'completed').length
   const failed     = topics.filter(t => t.status === 'failed').length
   const isDone     = batchStatus === 'done' || batchStatus === 'cancelled'
@@ -297,7 +299,7 @@ export default function BatchPanel() {
               <span className="text-[10px] font-semibold uppercase tracking-[0.1em] text-text-muted">
                 Topics
               </span>
-              <span className={`text-[11px] font-medium ${topicCount >= MAX_TOPICS ? 'text-accent' : 'text-text-muted'}`}>
+              <span className={`text-[11px] font-medium ${overLimit ? 'text-red-400' : topicCount >= MAX_TOPICS ? 'text-accent' : 'text-text-muted'}`}>
                 {topicCount} / {MAX_TOPICS}
               </span>
             </div>
@@ -317,10 +319,16 @@ export default function BatchPanel() {
               "
             />
 
+            {overLimit && (
+              <p className="text-[12px] text-red-400 mt-2">
+                Maximum {MAX_TOPICS} topics allowed. Remove {topicCount - MAX_TOPICS} topic{topicCount - MAX_TOPICS > 1 ? 's' : ''} to continue.
+              </p>
+            )}
+
             <div className="flex items-center gap-2 mt-3">
               <button
                 onClick={handleStart}
-                disabled={isRunning || topicCount === 0}
+                disabled={isRunning || topicCount === 0 || overLimit}
                 className={btnPrimary}
               >
                 Start Batch
