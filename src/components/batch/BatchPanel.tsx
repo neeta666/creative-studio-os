@@ -197,6 +197,7 @@ export default function BatchPanel({
             : t
         )
       )
+      onResult?.(variants[0])
     } catch {
       setTopics(prev =>
         prev.map((t, i) =>
