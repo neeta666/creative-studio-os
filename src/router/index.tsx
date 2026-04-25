@@ -1,25 +1,23 @@
 import { createBrowserRouter } from 'react-router-dom'
-import HomePage from '@/pages/HomePage'
-import PersonaPage from '@/pages/PersonaPage'
+import VideoStudioPage  from '@/pages/VideoStudioPage'
+import SocialAssetsPage from '@/pages/SocialAssetsPage'
+import CopyWriterPage   from '@/pages/CopyWriterPage'
+import PersonaPage      from '@/pages/PersonaPage'
 
 /*
-  Add new routes here as you build each feature.
-  import BatchPage        from '@/pages/BatchPage'
-  import HistoryPage      from '@/pages/HistoryPage'
-  import SetupWizardPage  from '@/pages/SetupWizardPage'
+  Routes match sidebar nav items exactly:
+  /          → Video Studio  (default landing)
+  /social    → Social Assets
+  /copy      → Copy Writer (BatchPanel lives here)
+  /persona   → Persona selection
 */
 
 const router = createBrowserRouter([
-  {
-    path: '/',
-    element: <HomePage />,
-  },
-  {
-    path: '/persona',
-    element: <PersonaPage />,
-  },
+  { path: '/',        element: <VideoStudioPage /> },
+  { path: '/social',  element: <SocialAssetsPage /> },
+  { path: '/copy',    element: <CopyWriterPage /> },
+  { path: '/persona', element: <PersonaPage /> },
   /*
-  { path: '/batch',   element: <BatchPage /> },
   { path: '/history', element: <HistoryPage /> },
   { path: '/setup',   element: <SetupWizardPage /> },
   */
